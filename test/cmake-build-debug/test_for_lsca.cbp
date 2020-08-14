@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="test_for_lsca"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="D:/Tech/projects/test_for_lsca/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_for_lsca">
+				<Option output="D:/Tech/projects/test_for_lsca/cmake-build-debug/test_for_lsca.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Tech/projects/test_for_lsca/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="h:\mingw\bin\../lib/gcc/mingw32/6.3.0/include"/>
+					<Add directory="h:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../include"/>
+					<Add directory="h:\mingw\bin\../lib/gcc/mingw32/6.3.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 test_for_lsca"/>
+					<CompileFile command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_for_lsca/fast">
+				<Option output="D:/Tech/projects/test_for_lsca/cmake-build-debug/test_for_lsca.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Tech/projects/test_for_lsca/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="h:\mingw\bin\../lib/gcc/mingw32/6.3.0/include"/>
+					<Add directory="h:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../include"/>
+					<Add directory="h:\mingw\bin\../lib/gcc/mingw32/6.3.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 test_for_lsca/fast"/>
+					<CompileFile command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="D:/Tech/projects/test_for_lsca/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="D:/Tech/projects/test_for_lsca/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="H:/CodeBlocks/MinGW/bin/mingw32-make.exe -f &quot;D:/Tech/projects/test_for_lsca/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="D:/Tech/projects/test_for_lsca/main.c">
+			<Option target="test_for_lsca"/>
+		</Unit>
+		<Unit filename="D:/Tech/projects/test_for_lsca/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

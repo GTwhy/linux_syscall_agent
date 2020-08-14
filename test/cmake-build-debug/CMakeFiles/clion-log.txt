@@ -1,0 +1,4 @@
+"H:\CLion 2020.2\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" D:\Tech\projects\test_for_lsca
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Tech/projects/test_for_lsca/cmake-build-debug

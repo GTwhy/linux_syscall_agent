@@ -1,0 +1,3 @@
+"H:\CLion 2020.2\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\test_for_lsca.dir/objects.a
+H:\MinGW\bin\ar.exe cr CMakeFiles\test_for_lsca.dir/objects.a @CMakeFiles\test_for_lsca.dir\objects1.rsp
+H:\MinGW\bin\gcc.exe -g   -Wl,--whole-archive CMakeFiles\test_for_lsca.dir/objects.a -Wl,--no-whole-archive  -o test_for_lsca.exe -Wl,--out-implib,libtest_for_lsca.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\test_for_lsca.dir\linklibs.rsp
