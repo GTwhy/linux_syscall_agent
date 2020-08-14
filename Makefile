@@ -5,12 +5,11 @@ MAKE = make -w
 all :
 	cd ./daemon && $(MAKE)
 	cd ./lib && $(MAKE)
-	cd ./daemon && $(MAKE)
-	cd ./lib && $(MAKE)
-
 
 .PHONEY:clean
 
 clean:
 	cd ./daemon && $(MAKE) clean
 	cd ./lib && $(MAKE) clean
+
+

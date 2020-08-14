@@ -1,0 +1,1 @@
+cmd_/root/pro/test/test_for_kernel_module/hello.ko := ld -EL -r  -maarch64linux -T ./scripts/module-common.lds -T ./arch/arm64/kernel/module.lds --build-id  -o /root/pro/test/test_for_kernel_module/hello.ko /root/pro/test/test_for_kernel_module/hello.o /root/pro/test/test_for_kernel_module/hello.mod.o ;  true

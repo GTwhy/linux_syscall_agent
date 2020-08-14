@@ -1,0 +1,3 @@
+user.c --- user's app
+alib.c --- dynamic link library for lsca
+lsca_daemon.c --- system call server
