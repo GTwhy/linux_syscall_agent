@@ -86,13 +86,13 @@ int listen(){
             if(log_flag == 1){
                 lsca_log(current_node);
             }
-            //TODO: 处理任务，后续多线程改进
+            //TODO: 处理任务，后续多线程改进:
             int res;
             res = exec_task(current_node);
             if(res == -1){
                 printf("%s :  execute task failed!\n", __func__);
             }
-            del_task(buf);
+            //del_task(buf);
             return_value_to_user(buf,current_node->res_buf_number,res);
             //TODO:优化减少lock_time
             unlock_shm();

@@ -14,7 +14,11 @@
 #define __NR_getpeername 205
 #define __NR_sendmsg 211
 #define __NR_recvmsg 212
+#include "syscall_wrapper_write_read.h"
 
-int write(int a, char* b, int c);
+int agent_syscall(Node node);
+int get_res(int res_num);
+
+
 
 #endif //LSCA_LIB_H

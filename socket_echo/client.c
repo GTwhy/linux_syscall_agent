@@ -12,7 +12,8 @@ int main(int argc, char **argv)
     
     int sockfd;    //网络套接字
     struct sockaddr_in server_addr;    //服务器地址
-    
+    printf("size of sockaddr : %ld",sizeof(server_addr));
+
     /*socket函数*/
     sockfd=socket(AF_INET, SOCK_STREAM, 0);
     
@@ -28,16 +29,16 @@ int main(int argc, char **argv)
         perror("can't connect to server");
     
     /*ECHO处理函数*/
-    char send[1000],recv[1000];
+    char send[32],recv[32];
     
     /*从标准输入读取文本*/
-    while(fgets(send, 1000, stdin)!=NULL)
+    while(fgets(send, 32, stdin)!=NULL)
     {
         /*发送文本到服务器*/
         write(sockfd, send, strlen(send));
         
         /*接收从服务器返回*/
-        if(read(sockfd, recv, 1000)==0)
+        if(read(sockfd, recv, 32)==0)
             perror("server terminated");
         
         /*打印到标准输出*/

@@ -10,6 +10,7 @@
 int agent_write(Node* task){
     int res;
     res = write(atoi(task->x0),task->x1,atoi(task->x2));
+    printf("agenting\n");
     return res;
 }
 

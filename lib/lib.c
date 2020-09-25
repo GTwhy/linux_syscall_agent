@@ -9,14 +9,17 @@
 #include <sys/shm.h>
 #include <sys/sem.h>
 
-static RingBuffer* buf_addr =NULL;
-
+static RingBuffer* buf_addr = NULL;
+char res_buf[64];
 /**
  * 封装系统调用代理函数供lib使用
  * @param node
  * @return
  */
 int agent_syscall(Node node){
+    if(buf_addr == NULL){
+        buf_addr = buffer_malloc(sizeof(RingBuffer));
+    }
     //TODO:添加错误处理，多线程改进
     int res_num;
     while (lock_shm());
@@ -36,8 +39,12 @@ int get_res(int res_num){
         //TODO:&&的运行顺序需要检验，否则可能导致错误
         if(!lock_shm()){
             if(buf_addr->res_buf[res_num].get_result_flag == 1){
+                buf_addr->res_buf[res_num].get_result_flag = 0;
                 res = buf_addr->res_buf[res_num].x0;
+                //从结果缓冲区中复制传递的数据，再解除占用。
+                memcpy(res_buf,buf_addr->res_buf[res_num].stack,32);
                 buf_addr->res_buf[res_num].taken_flag = 0;
+                de_queue(buf_addr);
                 while (unlock_shm());
                 return res;
             }
@@ -45,39 +52,3 @@ int get_res(int res_num){
         while (unlock_shm());
     }
 }
-
-/**
- * 重新定义write库函数的包装，后续移到wrapper文件中
- * @param a
- * @param b
- * @param c
- * @return
- */
-
-int write(int a, char* b, int c){
-    if(buf_addr == NULL){
-        buf_addr = buffer_malloc(sizeof(RingBuffer));
-    }
-    int res;
-    //将参数封装进用于传递参数的数据结构
-    Node node;
-    void* pa = node.x0;
-    void* pb = node.x1;
-    void* pc = node.x2;
-    node.syscall_number = __NR_write;
-    sprintf(pa, " %d" , a);
-    sprintf(pc, " %d" , c);
-    strcpy(pb,b);
-    res = agent_syscall(node);
-    res = get_res(res);
-    return res;
-}
-
-
-
-//重新定义read库函数的包装
-int read(int a, char* b, int c){
-
-}
-
-

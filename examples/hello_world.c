@@ -1,6 +1,6 @@
 #include <unistd.h>
 void main(){
-
-    write(1,"Hello World!\n",14);
-    write(1,"Good Bye!\n",10);
+    for (int i = 0; i < 100; ++i) {
+        write(1,"Hello World!\n",14);
+    }
 }

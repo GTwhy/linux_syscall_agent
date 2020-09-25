@@ -26,6 +26,7 @@ typedef struct result_node
     char get_result_flag;
     char taken_flag;
     int x0;
+    char stack[STACK_SIZE];
 }Result;
 
 /**

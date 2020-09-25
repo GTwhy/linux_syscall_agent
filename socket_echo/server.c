@@ -4,15 +4,15 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
-
-//str_echo函数从套接字上回射数据
+#define ECHO_SIZE 32
+//str_echo函数从套接字上回射数据,由于共享缓冲区限制，目前只支持16个字符以下
 void str_echo(int sockfd)
 {
     ssize_t n;
-    char buf[1000];
+    char buf[ECHO_SIZE];
     
 again:
-    while((n=read(sockfd, buf, 1000)) > 0)
+    while((n=read(sockfd, buf, ECHO_SIZE)) > 0)
     {
         write(sockfd, buf, n);
     }
@@ -25,13 +25,9 @@ again:
 int main(int argc, char **argv)
 {   
     int listenfd, connfd;    //监听描述符，连接描述符
-    pid_t childpid;    //子进程pid
-    socklen_t clilen;    //客户IP地址长度
-    struct sockaddr_in server_addr, client_addr;
-    
+    struct sockaddr_in server_addr, client_addr;//16 bytes
     /*socket函数*/
     listenfd=socket(AF_INET, SOCK_STREAM, 0);
-
     /*服务器地址*/
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family=AF_INET;
@@ -40,15 +36,14 @@ int main(int argc, char **argv)
 
     /*bindt函数*/
     if(bind(listenfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
-        perror("bind error");    
+        perror("bind error");
     
     /*listent函数*/
     if(listen(listenfd, 10) < 0)
         perror("listen error");
-    
+
     while(1)
     {
-
         if((connfd=accept(listenfd, (struct sockaddr*)NULL, NULL)) < 0)
            return 0;
         close(listenfd);    //关闭监听描述符

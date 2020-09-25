@@ -96,7 +96,7 @@ RingBuffer* init_buffer(int number_of_nodes) {
     buf->size = number_of_nodes;
     buf->res_buf_pointer = 0;
     memset((void*)buf->queue, 0, number_of_nodes * sizeof(Node));
-    memset((void*)buf->res_buf, 0, RESULT_BUFFER_SIZE * sizeof(int));
+    memset((void*)buf->res_buf, 0, RESULT_BUFFER_SIZE * sizeof(Result));
     while (unlock_shm());
     return buf;
 }
@@ -108,6 +108,7 @@ RingBuffer* init_buffer(int number_of_nodes) {
  */
 int is_buffer_empty(RingBuffer* buf){
     return (buf->head == -1);
+
 }
 /**
  * 判断队列是否为满
