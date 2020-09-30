@@ -12,6 +12,7 @@ int main(int argc, char **argv)
 {
     if(argc<1)    //检查输入参数
         perror("usage:echo_client <addr>");
+    write(1,"", strlen(send));
     
     int sockfd;    //网络套接字
     struct sockaddr_in server_addr;    //服务器地址

@@ -36,7 +36,7 @@ int (*syscall_agent_table[SYSCALL_AGENT_MAX])(); //系统调用表，实质是�
 
 
 /**
- * 可选的记录日志
+ * 可选的记录日志，在启动时输入参数确定
  * @param n
  */
 void lsca_log(Node* n){
@@ -52,6 +52,7 @@ void lsca_log(Node* n){
     fp = fopen("./log.txt", "a");
     fprintf(fp, "Time   : %d.%d.%d %d:%d:%d\n",1900+p->tm_year,1+p->tm_mon,p->tm_mday,8+p->tm_hour,p->tm_min,p->tm_sec);
     fprintf(fp, "SysNum : %d\n",n->syscall_number);
+    //可以根据需要的参数数量更改
     fprintf(fp, "Param  :  %s  %s  %s\n\n",n->x0,n->x1,n->x2);
     fclose(fp);
 }
@@ -170,7 +171,11 @@ int init_daemon(int num_of_nodes) {
         printf("%s :  stop listening due to error!\n", __func__ );
     }
 }
-
+/**
+ * 在测试过程中发现，代理listen时极少概率出现daemon卡在代理listen的情况，因此在主函数中运行server进行测试。
+ * 后来发现可能是端口占用问题导致的。
+ * @return
+ */
 int listen_test()
 {
     int listenfd, connfd;    //监听描述符，连接描述符
