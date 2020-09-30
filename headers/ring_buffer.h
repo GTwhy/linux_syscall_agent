@@ -3,6 +3,8 @@
 
 #include <stddef.h>
 #include "daemon.h"
+#include <sys/types.h>
+
 #define FTOK_FILE_BUFFER "/etc/profile"
 /**
  * 共享内存队列的队列节点
@@ -15,7 +17,7 @@ typedef struct queue_node
     char x0[REG_SIZE];
     char x1[REG_SIZE];
     char x2[REG_SIZE];
-    char stack [STACK_SIZE];
+    char stack[STACK_SIZE];
 }Node;
 
 /**
@@ -56,6 +58,7 @@ int lock_shm();
 int unlock_shm();
 void return_value_to_user(RingBuffer* buf, int res_buf_num, int res_val);
 int del_task(RingBuffer* buf);
+void return_buffer_to_user(Node* node,void *res_buf);
 
 
 #endif //LSCA_RING_BUFFER_H

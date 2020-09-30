@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 int semid, shmid_buffer, shmid_queue;//信号量、共享内存标识符
-
+RingBuffer* buf_addr;
 /**
  * 为缓冲区加锁
  * @return
@@ -98,6 +98,7 @@ RingBuffer* init_buffer(int number_of_nodes) {
     memset((void*)buf->queue, 0, number_of_nodes * sizeof(Node));
     memset((void*)buf->res_buf, 0, RESULT_BUFFER_SIZE * sizeof(Result));
     while (unlock_shm());
+    buf_addr = buf;
     return buf;
 }
 
@@ -206,6 +207,9 @@ void return_value_to_user(RingBuffer* buf, int res_buf_num, int res_val){
     buf->res_buf[res_buf_num].x0 = res_val;
 }
 
+void return_buffer_to_user(Node* node,void *res_buf){
+    memcpy(buf_addr->res_buf[node->res_buf_number].stack,res_buf,sizeof(res_buf));
+}
 
 
 /**

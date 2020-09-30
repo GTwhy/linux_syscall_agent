@@ -1,5 +1,6 @@
 #ifndef LSCA_SYSCALL_WRAPPER_DAEMON_CONTROL_H
 #define LSCA_SYSCALL_WRAPPER_DAEMON_CONTROL_H
+#include <sys/types.h>
 
 void stop_daemon();
 

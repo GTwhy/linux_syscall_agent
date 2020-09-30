@@ -2,6 +2,8 @@
 #include "../headers/semaphore_helper.h"
 #include "../headers/ring_buffer.h"
 #include "../headers/lib.h"
+#include "../headers/syscall_wrapper_write_read.h"
+#include "../headers/syscall_wrapper_socket.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,6 +45,27 @@ int get_res(int res_num){
                 res = buf_addr->res_buf[res_num].x0;
                 //从结果缓冲区中复制传递的数据，再解除占用。
                 memcpy(res_buf,buf_addr->res_buf[res_num].stack,32);
+                buf_addr->res_buf[res_num].taken_flag = 0;
+                de_queue(buf_addr);
+                while (unlock_shm());
+                return res;
+            }
+        }
+        while (unlock_shm());
+    }
+}
+
+int get_res_with_buffer(int res_num,char *buf_ptr){
+    //TODO:后续添加多线程可重入改进
+    int res;
+    for(;;){
+        //TODO:&&的运行顺序需要检验，否则可能导致错误
+        if(!lock_shm()){
+            if(buf_addr->res_buf[res_num].get_result_flag == 1){
+                buf_addr->res_buf[res_num].get_result_flag = 0;
+                res = buf_addr->res_buf[res_num].x0;
+                //从结果缓冲区中复制传递的数据，再解除占用。
+                memcpy(buf_ptr,buf_addr->res_buf[res_num].stack, STACK_SIZE);
                 buf_addr->res_buf[res_num].taken_flag = 0;
                 de_queue(buf_addr);
                 while (unlock_shm());

@@ -1,13 +1,13 @@
 vpath %.h ../headers
 vpath %.c ../tools
 
-CFLAGS  =-shared -fPIC -g -o
+CFLAGS =-shared -fPIC -g -o
 TARGET = agent_lib.so
 export MAKE = make -w
 
-OBJS = $(patsubst %.c,%.o,$(wildcard *.c)) \
-	$(patsubst %.c,%.o,$(wildcard ../tools/*.c)) \
-	$(wildcard ../syscall_wrappers/*.o)
+LIB = $(patsubst %.c,%.o,$(wildcard *.c))
+TOOLS =	$(patsubst %.c,%.o,$(wildcard ../tools/*.c))
+WRAPPERS =	$(patsubst %.c,%.o,$(wildcard ../syscall_wrappers/*.c))
 
 HEADERS = $(wildcard ../headers/*.h)
 
@@ -18,8 +18,8 @@ all : subsystem $(TARGET)
 subsystem:
 	cd ../syscall_wrappers && $(MAKE)
 
-$(TARGET):$(OBJS)
-	cc $(CFLAGS) $(TARGET) $(OBJS)
+$(TARGET):$(LIB) $(WRAPPERS)
+	cc $(CFLAGS) $(TARGET) $(LIB) $(WRAPPERS) $(TOOLS)
 
 lib.o:lib.c $(HEADERS)
 	cc -g -c -o lib.o lib.c

@@ -1,19 +1,28 @@
 //
 // Created by why on 2020/8/13.
 //
-
+#include <stdint.h>
 #include<time.h>
 #include <stdio.h>
+
+/* Internet address. */
+struct in_addr {
+    uint32_t       s_addr;     /* address in network byte order */
+};
+
+struct sockaddr_in {
+    uint16_t   sin_family; /* address family: AF_INET */
+    uint16_t     sin_port;   /* port in network byte order */
+    struct in_addr sin_addr;   /* internet address */
+    char    sin_zero[8];
+};
+
+struct sockaddr {
+    uint16_t sin_family;//地址族
+    char sa_data[14]; //14字节，包含套接字中的目标地址和端口信息
+};
+
+
 int main() {
-    time_t timep;
-    struct tm *p;
-    time(&timep);
-    p = gmtime(&timep);
-    printf("%d\n", p->tm_sec); /*获取当前秒*/
-    printf("%d\n", p->tm_min); /*获取当前分*/
-    printf("%d\n", 8 + p->tm_hour);/*获取当前时,这里获取西方的时间,刚好相差八个小时*/
-    printf("%d\n", p->tm_mday);/*获取当前月份日数,范围是1-31*/
-    printf("%d\n", 1 + p->tm_mon);/*获取当前月份,范围是0-11,所以要加1*/
-    printf("%d\n", 1900 + p->tm_year);/*获取当前年份,从1900开始，所以要加1900*/
-    printf("%d\n", p->tm_yday); /*从今年1月1日算起至今的天数，范围为0-365*/
+    printf("socketaddr_in  %d\nsockaddr  %d\nin_addr  %d\n",sizeof(struct sockaddr_in),sizeof(struct sockaddr),sizeof(struct in_addr));
 }

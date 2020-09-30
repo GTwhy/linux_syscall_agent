@@ -14,7 +14,21 @@
 #include <time.h>
 #define EXIT_CODE 777
 
+//test server's syscall listen
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <errno.h>
+#include <unistd.h>
+#include <string.h>
+#define ECHO_SIZE 32
+
+
 char log_flag = 1;  //日志记录标志变量
+char redirect_flag = 0; //重定向标志变量
+char redirect_path[64];
 
 Node* current_node = NULL;  //当前节点
 RingBuffer* buf = NULL;
@@ -38,7 +52,7 @@ void lsca_log(Node* n){
     fp = fopen("./log.txt", "a");
     fprintf(fp, "Time   : %d.%d.%d %d:%d:%d\n",1900+p->tm_year,1+p->tm_mon,p->tm_mday,8+p->tm_hour,p->tm_min,p->tm_sec);
     fprintf(fp, "SysNum : %d\n",n->syscall_number);
-    fprintf(fp, "Param  :  %s\n",n->x1);
+    fprintf(fp, "Param  :  %s  %s  %s\n\n",n->x0,n->x1,n->x2);
     fclose(fp);
 }
 
@@ -69,7 +83,7 @@ int exec_task(Node* task){
  * 持续监听是否有任务需要完成，接收到结束信号则返回
  * @return
  */
-int listen(){
+int listen_tasks(){
     //循环判断是否有任务需要完成
     for(; ;)
     {
@@ -90,10 +104,13 @@ int listen(){
             int res;
             res = exec_task(current_node);
             if(res == -1){
-                printf("%s :  execute task failed!\n", __func__);
+                printf("lsca_daemon :  execute task failed! syscall_num : %d\n",current_node->syscall_number);
             }
             //del_task(buf);
+            //传递结果缓冲区
             return_value_to_user(buf,current_node->res_buf_number,res);
+            //返回结果后就可以清空传递参数所用的内存了
+            memset(current_node,0,sizeof(current_node));
             //TODO:优化减少lock_time
             unlock_shm();
         }else{
@@ -123,6 +140,11 @@ int init_syscall_agent_table(){
     syscall_agent_table[__NR_read] = agent_read;
     syscall_agent_table[__NR_write] = agent_write;
     syscall_agent_table[__NR_stop_daemon] = daemon_exit;
+    syscall_agent_table[__NR_socket] = agent_socket;
+    syscall_agent_table[__NR_bind] = agent_bind;
+    syscall_agent_table[__NR_listen] = agent_listen;
+    syscall_agent_table[__NR_accept] = agent_accept;
+    syscall_agent_table[__NR_connect] = agent_connect;
     return 0;
 }
 
@@ -132,22 +154,51 @@ int init_syscall_agent_table(){
  * @return 大于零则初始化成功，否则初始化失败。
  */
 int init_daemon(int num_of_nodes) {
-    printf("%s :  LSCA daemon is starting up!\n", __func__ );
-    printf("%s :  start initial ring buffer!\n", __func__ );
+    printf("%s :  LSCA daemon is starting up\n", __func__ );
+    printf("%s :  start initial ring buffer\n", __func__ );
     buf = init_buffer(num_of_nodes);
     if(buf == NULL){
         printf("%s :  init buffer failed!\n", __func__ );
         return -1;
     }
-    printf("%s :  start initial syscall_agent_table!\n", __func__ );
+    printf("%s :  start initial syscall_agent_table\n", __func__ );
     if(init_syscall_agent_table()){
-        printf("%s :  init syscall_agent_table failed!\n", __func__ );
+        printf("%s :  init syscall_agent_table failed\n", __func__ );
     }
-    printf("%s :  start listening to the user programs!\n", __func__ );
-    if(listen() == -1){
+    printf("%s :  start providing services to user programs\n", __func__ );
+    if(listen_tasks() == -1){
         printf("%s :  stop listening due to error!\n", __func__ );
     }
 }
+
+int listen_test()
+{
+    int listenfd, connfd;    //监听描述符，连接描述符
+    struct sockaddr_in server_addr, client_addr;//16 bytes
+    /*socket函数*/
+    listenfd=socket(AF_INET, SOCK_STREAM, 0);
+    /*服务器地址*/
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family=AF_INET;
+    server_addr.sin_addr.s_addr=htonl(INADDR_ANY);
+    server_addr.sin_port=htons(12345);
+    /*bind函数*/
+    if(bind(listenfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
+        perror("bind error");
+    /*listen函数*/
+    if(listen(listenfd, 10) < 0)
+        perror("listen error");
+//    while(1)
+//    {
+//        if((connfd=accept(listenfd, (struct sockaddr*)NULL, NULL)) < 0)
+//            return 0;
+//        close(listenfd);    //关闭监听描述符
+//        printf("echo ok\n");
+//        close(connfd);   //父进程关闭连接描述符
+//    }
+    return 0;
+}
+
 
 
 
@@ -155,7 +206,30 @@ int init_daemon(int num_of_nodes) {
  * lsca daemon 起点
  * @return
  */
-int main(){
+int main(int argc, char **argv){
+    //test for syscall_listen
+    //listen_test();
+
+    //检查输入参数,判断是否开启log
+    if(argc<2){
+        printf("usage1:daemon log\nusage2:daemon nlog\n");
+        return 0;
+    }
+    //根据参数改变log_falg
+    if(!strcmp(argv[1],"log")){
+        log_flag = 1;
+    }else if(!strcmp(argv[0],"nlog")){
+        log_flag = 0;
+    }else{
+        perror("usage1:daemon log\nusage2:daemon nlog");
+    }
+    //根据参数改变redirect_flag
+    if(argc >= 3){
+        if(strcmp(argv[2],"redirect")){
+            redirect_flag = 1;
+        }
+    }
+    //初始化daemon
     if (init_daemon(RING_BUFFER_SIZE) == -1) {
         printf("%s :  !\n", __func__);
         printf("%s :  start up LSCA daemon failed!\n", __func__);
