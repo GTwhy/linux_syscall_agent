@@ -11,11 +11,11 @@
    4. 在agent_lib.so帮助下user从缓冲区得到返回值，调用代理流程结束。
   
   ### **结构示意图**
-   ![](https://ftp.bmp.ovh/imgs/2020/09/23f3cce3859d532a.png)
+   ![](https://whypics.oss-cn-shenzhen.aliyuncs.com/pics/VISIO_2gKiKskAsu.png)
 
  ### **流程示意图**
  
-   ![](https://ftp.bmp.ovh/imgs/2020/09/027004198db9ef1b.png)
+   ![](https://whypics.oss-cn-shenzhen.aliyuncs.com/pics/chrome_fEvxU4hcRG.png)
  
 ## 使用说明:
    1.在lsca项目顶层目录执行命令make即可在daemon和lib文件夹下分别生成daemon可执行程序和agent_lib.so动态链接库。
